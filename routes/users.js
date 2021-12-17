@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const CryptoJS = require("crypto-js");
 const User = require("../models/User");
-const {random}= require ('../utils/generateUniqueId')
+const { random } = require('../utils/generateUniqueId')
 
 const {
   verifyToken,
@@ -59,7 +59,7 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   const query = req.query.new;
   try {
-    
+
     const user = query
       ? await User.find().sort({ _id: -1 }).limit(5)
       : await User.find();
@@ -72,29 +72,29 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
 
 //get user stats 
 
-router.get('/stats',verifyTokenAndAdmin,async(req,res)=>{
+router.get('/stats', verifyTokenAndAdmin, async (req, res) => {
   const date = new Date();
-  const lastYear = new Date(date.setFullYear(date.getFullYear()-1))
+  const lastYear = new Date(date.setFullYear(date.getFullYear() - 1))
 
 
-  try{
+  try {
     const data = await User.aggregate([
-      {$match:{createdAt:{$gte:lastYear}}},
+      { $match: { createdAt: { $gte: lastYear } } },
       {
-        $project:{
-          month:{$month:'$createdAt'},
+        $project: {
+          month: { $month: '$createdAt' },
         },
       },
       {
-        $group:{
-          _id:'$month',
-          total:{$sum:1}
+        $group: {
+          _id: '$month',
+          total: { $sum: 1 }
         }
       },
-     
+
     ])
-res.status(200).json(data)
-  }catch(err){
+    res.status(200).json(data)
+  } catch (err) {
     res.status(500).json(err)
   }
 })

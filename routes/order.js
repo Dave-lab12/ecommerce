@@ -84,8 +84,7 @@ router.get('/income', verifyTokenAndAdmin, async (req, res) => {
     const prevMonth = new Date(date.setMonth(lastMonth.getMonth() - 1))
 
     try {
-
-        const income = await User.aggregate([
+        const income = await Order.aggregate([
             { $match: { createdAt: { $gte: prevMonth } } },
             {
                 $project: {
@@ -101,9 +100,9 @@ router.get('/income', verifyTokenAndAdmin, async (req, res) => {
             },
 
         ])
-        res.send(200).json(income)
+        res.status(200).json(income)
     } catch (err) {
-        res.json(500).json(err)
+        res.status(500).json(err)
     }
 })
 

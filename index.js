@@ -6,7 +6,8 @@ const userRoute = require("./routes/users");
 const AuthRoute = require("./routes/auth");
 const productsRoute = require('./routes/product')
 const ordersRoute = require('./routes/order')
-
+const stripeRoute = require('./routes/stripe')
+const cors = require('cors')
 const PORT = process.env.PORT || 5000;
 dotenv.config();
 
@@ -18,11 +19,13 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
+app.use(cors())
 app.use(express.json());
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/auth", AuthRoute);
 app.use("/api/v1/products", productsRoute);
 app.use("/api/v1/orders", ordersRoute);
+app.use("/api/v1/checkout/", stripeRoute);
 
 app.listen(PORT, () => {
   console.log("server is running");

@@ -1,4 +1,4 @@
-# Ecommerce API 🔗
+# Ecommerce API 🛒
 
 This project was made via Nodejs,express and mongodb it is a rest api ecommerse website functionality are 
 - add, remove, update and create a product
